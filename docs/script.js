@@ -76,8 +76,13 @@ function updateIss(iss) {
     speed.textContent = iss.velocity;
 }
 
-function updatePlace(continent = "--", country = "--", locality = "--") {
-    place.textContent = `Continent: ${continent}, Country: ${country}, Locality: ${locality}`
+function updatePlace(continent, country, locality) {
+    if (!country && !continent) {
+        place.textContent = locality;
+    }
+    else {
+        place.textContent = `Continent: ${continent}, Country: ${country}`;
+    }
 }
 
 init();
