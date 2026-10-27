@@ -47,8 +47,7 @@ async function getPosition() {
 async function getPlace(lat, lon) {
     const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
     const data = await response.json();
-    updatePlace(data.continent, data.countryName);
-    console.log(data);
+    updatePlace(data.continent, data.countryName, data.locality);
 }
 
 async function init() {
@@ -77,8 +76,8 @@ function updateIss(iss) {
     speed.textContent = iss.velocity;
 }
 
-function updatePlace(continent, country) {
-    place.textContent = `Continent: ${continent}, Country: ${country}`
+function updatePlace(continent = "--", country = "--", locality = "--") {
+    place.textContent = `Continent: ${continent}, Country: ${country}, Locality: ${locality}`
 }
 
 init();
