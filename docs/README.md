@@ -4,7 +4,7 @@ A real-time web app that tracks the International Space Station as it orbits the
 
 ![ISS Live Tracker screenshot](screenshot.png)
 
-**Live demo:** _add your GitHub Pages link here_
+**Live demo:** https://g0dwarri0r.github.io/iss-tracker/
 
 ## Features
 
