@@ -57,6 +57,7 @@ async function getPlace(lat, lon) {
     const data = await response.json();
     if (!data.country_code || data.country_code === "??"){
         place.textContent = "Open Ocean 🌊"
+        return;
     }
     place.textContent = `${regionNames.of(data.country_code)}`;
 }
