@@ -4,6 +4,8 @@ const altitude = document.querySelector('#alt');
 const speed = document.querySelector('#speed');
 const track = document.querySelector('#track');
 const place = document.querySelector('#place');
+const statusEl = document.querySelector('#status');
+
 
 
 // MAP, POINT AND TRAIL
@@ -39,6 +41,7 @@ track.addEventListener('change', (e) => {
 async function getPosition() {
     const request = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
     if (!request.ok) {
+        updateStatus(true);
         throw new Error("Could not reach the ISS tracking service");
     }
     return await request.json();
@@ -46,14 +49,20 @@ async function getPosition() {
 
 async function getPlace(lat, lon) {
     const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+    if(!response.ok) {
+        updateStatus(true);
+        throw new Error("Could not reach the ISS tracking scervice");
+    }
     const data = await response.json();
     updatePlace(data.continent, data.countryName, data.locality);
 }
 
 async function init() {
+    updateStatus(true);
     setInterval(async () => {
         {
             try {
+                updateStatus(false);
                 const iss = await getPosition();
                 updateIss(iss);
                 getPlace(iss.latitude, iss.longitude);
@@ -82,6 +91,19 @@ function updatePlace(continent, country, locality) {
     }
     else {
         place.textContent = `Continent: ${continent}, Country: ${country}`;
+    }
+}
+
+function updateStatus(x) {
+    if (x === true) {
+        statusEl.textContent = "connecting..."
+        statusEl.classList.remove('text-slate-300');
+        statusEl.classList.add('text-red-300');
+    }
+    if (x === false) {
+        statusEl.textContent = "connected!"
+        statusEl.classList.add('text-slate-300');
+        statusEl.classList.remove('text-red-300');
     }
 }
 
