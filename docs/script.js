@@ -48,13 +48,17 @@ async function getPosition() {
 }
 
 async function getPlace(lat, lon) {
-    const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
-    if(!response.ok) {
+    const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+    const response = await fetch(`https://api.wheretheiss.at/v1/coordinates/${lat},${lon}`);
+    if (!response.ok) {
         updateStatus(true);
-        throw new Error("Could not reach the ISS tracking scervice");
+        throw new Error("Place lookup failed");
     }
     const data = await response.json();
-    updatePlace(data.continent, data.countryName, data.locality);
+    if (!data.country_code || data.country_code === "??"){
+        place.textContent = "Open Ocean 🌊"
+    }
+    place.textContent = `${regionNames.of(data.country_code)}`;
 }
 
 async function init() {
@@ -79,19 +83,10 @@ async function init() {
 }
 
 function updateIss(iss) {
-    latitude.textContent = iss.latitude;
-    longitude.textContent = iss.longitude;
-    altitude.textContent = iss.altitude;
-    speed.textContent = iss.velocity;
-}
-
-function updatePlace(continent, country, locality) {
-    if (!country && !continent) {
-        place.textContent = locality;
-    }
-    else {
-        place.textContent = `Continent: ${continent}, Country: ${country}`;
-    }
+    latitude.textContent = `${iss.latitude.toFixed(3)}°`;
+    longitude.textContent = `${iss.longitude.toFixed(3)}°`;
+    altitude.textContent = `${iss.altitude.toFixed(3)} km`;
+    speed.textContent = `${iss.velocity.toFixed(3)} km/h`;
 }
 
 function updateStatus(x) {
