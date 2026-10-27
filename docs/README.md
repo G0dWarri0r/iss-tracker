@@ -29,7 +29,7 @@ No API keys are required.
 
 - **`fetch` with `async/await`**: requesting data from the APIs and writing asynchronous code that reads top to bottom
 - **`try/catch` with `throw`**: checking `response.ok` and handling failed requests without crashing the app
-- **Polling loop with a custom `sleep()`**: a `while (true)` loop that awaits a Promise wrapped around `setTimeout`, so each update finishes before the next starts
+- **Polling loop with a custom `setTimeout`**: a `setTimeout` that awaits a Promise so each update finishes before the next starts
 - **DOM manipulation**: `querySelector` and `textContent` to update the readouts live
 - **`Intl.DisplayNames`**: a built-in browser API that converts country codes like `IN` into names like `India`
 - **Leaflet methods**: `setLatLng`, `addLatLng`, and `panTo` to move the marker, grow the trail, and follow the ISS
